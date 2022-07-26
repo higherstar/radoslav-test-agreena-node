@@ -76,10 +76,7 @@ export class AuthController {
 
         res.status(200).send(tokens);
       } else {
-        return res.status(400).send({
-          status: ResponseStatus.INVALID_EMAIL_PASSWORD,
-          message: WRONG_EMAIL_PASSWORD,
-        });
+        return handleError(res, 400, WRONG_EMAIL_PASSWORD, ResponseStatus.INVALID_EMAIL_PASSWORD);
       }
     }
   };

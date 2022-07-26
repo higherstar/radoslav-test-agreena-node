@@ -2,9 +2,9 @@ import request from 'supertest';
 
 import app from '../../src/app';
 import { connect } from '../../src/typeorm';
+import { CertificateStatus } from '../../src/shared/constants/global.constants';
 import UserFactory from '../factories/user.factory';
 import CertificateFactory from "../factories/certificate.factory";
-import {CertificateStatus} from "../../src/shared/constants/global.constants";
 
 let token;
 

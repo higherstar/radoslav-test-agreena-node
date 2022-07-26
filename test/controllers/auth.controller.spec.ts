@@ -1,18 +1,14 @@
 import request from 'supertest';
 
 import app from '../../src/app';
-import UserFactory from '../factories/user.factory';
 import { connect } from '../../src/typeorm';
+import UserFactory from '../factories/user.factory';
 
 beforeAll(async () => {
     await connect();
 });
 
 describe('Auth API', () => {
-    beforeEach(async () => {
-        // await getRepository(Users).clear();
-    });
-
     it('Sign in successfully.', async () => {
         const user = await UserFactory();
         const actual = await request(app)

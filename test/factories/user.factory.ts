@@ -1,6 +1,6 @@
-import faker from 'faker';
 import { getRepository } from 'typeorm';
 import crypto from 'crypto';
+import faker from 'faker';
 
 import { Users } from '../../src/entities/Users';
 

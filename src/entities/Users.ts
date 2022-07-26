@@ -3,13 +3,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { IsNumber, IsString, IsEmail } from 'class-validator';
-
-import { CarbonCertificates } from './CarbonCertificates';
 
 @Entity('users')
 export class Users extends BaseEntity {
