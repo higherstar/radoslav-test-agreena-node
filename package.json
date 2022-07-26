@@ -4,9 +4,9 @@
   "description": "",
   "scripts": {
     "start": "nodemon",
-    "migration:sync": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json schema:sync",
-    "migration:run": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json migration:run",
-    "migration:create": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json migration:create -n seed -d src/migration",
+    "migration:sync": "ts-node ./node_modules/typeorm/cli.js --config src/ormconfig.ts schema:sync",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js --config src/ormconfig.ts migration:run",
+    "migration:create": "ts-node ./node_modules/typeorm/cli.js --config src/ormconfig.ts migration:create -n seed -d src/migration",
     "test": "jest",
     "test-migrate:sync": "ts-node ./node_modules/typeorm/cli.js --config src/ormconfig.ts schema:sync"
   },
