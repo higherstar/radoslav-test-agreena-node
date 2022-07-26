@@ -6,8 +6,10 @@
     "start": "nodemon",
     "build": "rm -rf ./dist && tsc",
     "build:staging": "rm -rf ./dist && tsc",
+    "migration:db": "ts-node ./node_modules/typeorm/cli.js init --database test_db",
     "migration:sync": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json schema:sync",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json migration:run",
+    "migration:create": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json migration:create -n seed -d src/migration",
     "test": "jest",
     "test-migrate": "ts-node ./node_modules/typeorm/cli.js --config ormconfig-test.json schema:sync"
   },

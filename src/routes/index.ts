@@ -11,8 +11,8 @@ router.post('/auth/signin', authController.login);
 router.post('/auth/signup', authController.register);
 router.post('/auth/refresh', authController.refresh);
 
-router.get('/carbon/allowed-list', authenticate, certificateController.getAvailableList);
-router.get('/carbon/owned-list', authenticate, certificateController.getOwnedList);
-router.post('/carbon/transfer/:id', authenticate, certificateController.transfer);
+router.get('/certificate/allowed-list', authenticate, certificateController.getAvailableList);
+router.get('/certificate/owned-list', authenticate, certificateController.getOwnedList);
+router.post('/certificate/transfer/:id', authenticate, certificateController.transfer);
 
 export default router;
