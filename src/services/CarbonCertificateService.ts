@@ -31,9 +31,24 @@ export default class CarbonCertificateService {
     });
   }
 
-  public async transfer(id: number, ownerId: number) {
+  public async transfer(id: number, ownerId: number, currentUserId: number) {
     const repository = getRepository(CarbonCertificates);
-    const certificate = await repository.findOne(id);
+
+    const certificate = await repository.findOne({
+      where: { id },
+      relations: ['user'],
+    });
+
+    if (!certificate || !certificate.user || certificate.user.id !== currentUserId) {
+      return Promise.reject();
+    }
+
+    const owner = await getRepository(Users).findOne(ownerId);
+
+    if (!owner || ownerId === currentUserId) {
+      return Promise.reject();
+    }
+
     certificate.user = await getRepository(Users).findOne(ownerId);
     certificate.status = CertificateStatus.TRANSFERRED;
     return certificate.save();

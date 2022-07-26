@@ -33,10 +33,10 @@ export class CertificateController {
     try {
       const { id } = req.params;
       const { userId } = req.query;
-      const data = await this.carbonCertificateService.transfer(+id, +userId);
+      const data = await this.carbonCertificateService.transfer(+id, +userId, req.user.id);
       res.json(data)
     } catch (err) {
-      next (err);
+      return res.status(400).json();
     }
   }
 }
