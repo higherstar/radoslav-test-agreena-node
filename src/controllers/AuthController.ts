@@ -10,7 +10,6 @@ import {
   EXPIRED_JWT,
   INVALID_JWT,
   INVALID_REFRESH_TOKEN,
-  NOT_FOUND_USER,
   REGISTERED,
   WRONG_EMAIL_PASSWORD
 } from '../shared/constants/message.constants';
@@ -59,22 +58,6 @@ export class AuthController {
       } catch (error) {
         return handleError(res, 401, EXPIRED_JWT, ResponseStatus.EXPIRED_JWT);
       }
-    }
-  };
-
-  public fetchMe = async (req: IRequest, res: Response) => {
-    const me = await this.userService.findByEmail(req.user.email);
-
-    if (me) {
-      res.status(200).send({
-        status: ResponseStatus.SUCCESS,
-        data: me,
-      });
-    } else {
-      res.status(200).send({
-        status: ResponseStatus.FAILED,
-        message: NOT_FOUND_USER,
-      });
     }
   };
 

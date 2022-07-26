@@ -1,7 +1,9 @@
 import { Service } from 'typedi';
-import { getRepository, IsNull, Not } from 'typeorm';
+import { getRepository, IsNull } from 'typeorm';
 
 import { CarbonCertificates } from '../entities/CarbonCertificates';
+import { CertificateStatus } from '../shared/constants/global.constants';
+import { Users } from '../entities/Users';
 
 @Service()
 export default class CarbonCertificateService {
@@ -20,12 +22,20 @@ export default class CarbonCertificateService {
     });
   }
 
-  public async getOwnedList() {
+  public async getOwnedList(ownerId: number) {
     const repository = getRepository(CarbonCertificates);
     return await repository.find({
       where: {
-        user: Not(IsNull()),
+        user: ownerId,
       }
     });
+  }
+
+  public async transfer(id: number, ownerId: number) {
+    const repository = getRepository(CarbonCertificates);
+    const certificate = await repository.findOne(id);
+    certificate.user = await getRepository(Users).findOne(ownerId);
+    certificate.status = CertificateStatus.TRANSFERRED;
+    return certificate.save();
   }
 }

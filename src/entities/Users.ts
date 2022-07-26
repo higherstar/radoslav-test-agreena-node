@@ -2,11 +2,12 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 import { IsNumber, IsString, IsEmail } from 'class-validator';
+import { CarbonCertificates } from './CarbonCertificates';
 
 @Entity('users')
 export class Users extends BaseEntity {
@@ -21,6 +22,9 @@ export class Users extends BaseEntity {
   @IsString()
   @Column()
   password: string;
+
+  @OneToMany(() => CarbonCertificates, (certificate) => certificate.user, { onDelete: 'SET NULL' })
+  users: CarbonCertificates[];
 
   @CreateDateColumn()
   createdAt: Date;
