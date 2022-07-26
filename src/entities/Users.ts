@@ -25,9 +25,6 @@ export class Users extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => CarbonCertificates, (certificate) => certificate.user, { onDelete: 'SET NULL' })
-  certificates: CarbonCertificates[];
-
   @CreateDateColumn()
   createdAt: Date;
 

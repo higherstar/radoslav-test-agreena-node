@@ -6,12 +6,11 @@
     "start": "nodemon",
     "build": "rm -rf ./dist && tsc",
     "build:staging": "rm -rf ./dist && tsc",
-    "migration:db": "ts-node ./node_modules/typeorm/cli.js init --database test_db",
     "migration:sync": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json schema:sync",
     "migration:run": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json migration:run",
     "migration:create": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json migration:create -n seed -d src/migration",
     "test": "jest",
-    "test-migrate": "ts-node ./node_modules/typeorm/cli.js --config ormconfig-test.json schema:sync"
+    "test-migrate:sync": "ts-node ./node_modules/typeorm/cli.js --config src/ormconfig.ts schema:sync"
   },
   "author": "",
   "license": "",
@@ -31,11 +30,11 @@
     "nodemon": "^1.19.1",
     "supertest": "^4.0.2",
     "ts-jest": "^24.3.0",
-    "ts-node": "^9.0.0",
+    "ts-node": "^10.4.0",
     "tslint": "^5.18.0",
     "typeorm": "^0.2.22",
     "typeorm-typedi-extensions": "^0.2.3",
-    "typescript": "^3.9.10"
+    "typescript": "^4.5.2"
   },
   "dependencies": {
     "@types/ws": "^6.0.4",

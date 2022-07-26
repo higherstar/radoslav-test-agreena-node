@@ -2,7 +2,8 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
-  Entity, JoinColumn, ManyToOne,
+  Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
@@ -29,7 +30,6 @@ export class CarbonCertificates extends BaseEntity {
   status: CertificateStatus;
 
   @ManyToOne(() => Users, (user) => user.id, { onDelete: 'SET NULL' })
-  @JoinColumn({ name: 'owner' })
   user: Users;
 
   @CreateDateColumn()
