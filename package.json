@@ -6,7 +6,8 @@
     "start": "nodemon",
     "build": "rm -rf ./dist && tsc",
     "build:staging": "rm -rf ./dist && tsc",
-    "migrate": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json schema:sync",
+    "migration:sync": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json schema:sync",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js --config ormconfig.json migration:run",
     "test": "jest",
     "test-migrate": "ts-node ./node_modules/typeorm/cli.js --config ormconfig-test.json schema:sync"
   },
