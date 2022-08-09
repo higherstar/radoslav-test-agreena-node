@@ -1,8 +1,9 @@
-import {MigrationInterface, QueryRunner} from "typeorm";
-import crypto from "crypto";
-import {Users} from "../entities/Users";
-import {CarbonCertificates} from "../entities/CarbonCertificates";
-import {CertificateStatus} from "../shared/constants/global.constants";
+import { MigrationInterface, QueryRunner } from 'typeorm';
+import crypto from 'crypto';
+
+import { Users } from '../entities/Users';
+import { CarbonCertificates } from '../entities/CarbonCertificates';
+import { CertificateStatus } from '../shared/constants/global.constants';
 
 export class seed1658854921278 implements MigrationInterface {
     public async up(queryRunner: QueryRunner): Promise<void> {

@@ -2,7 +2,7 @@ import app from './app';
 
 const PORT = process.env.PORT || 8080;
 
-process.on('uncaughtException', async (err) => {
+process.on('uncaughtException', async () => {
   process.exit(1);
 });
 

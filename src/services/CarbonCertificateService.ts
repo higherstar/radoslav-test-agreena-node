@@ -2,8 +2,8 @@ import { Service } from 'typedi';
 import { getRepository, IsNull } from 'typeorm';
 
 import { CarbonCertificates } from '../entities/CarbonCertificates';
-import { CertificateStatus } from '../shared/constants/global.constants';
 import { Users } from '../entities/Users';
+import { CertificateStatus } from '../shared/constants/global.constants';
 
 @Service()
 export default class CarbonCertificateService {

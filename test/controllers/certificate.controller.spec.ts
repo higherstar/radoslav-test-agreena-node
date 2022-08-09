@@ -4,7 +4,7 @@ import app from '../../src/app';
 import { connect } from '../../src/typeorm';
 import { CertificateStatus } from '../../src/shared/constants/global.constants';
 import UserFactory from '../factories/user.factory';
-import CertificateFactory from "../factories/certificate.factory";
+import CertificateFactory from '../factories/certificate.factory';
 
 let token;
 
@@ -22,7 +22,7 @@ describe('Certificate API', () => {
     });
 
     it('Get allowed list', async () => {
-        const certificate = await CertificateFactory();
+        await CertificateFactory();
 
         const actual = await request(app)
           .get(`/api/certificate/allowed-list`)
@@ -32,8 +32,7 @@ describe('Certificate API', () => {
     });
 
     it('Get owned list', async () => {
-        const certificate = await CertificateFactory();
-
+        await CertificateFactory();
         const actual = await request(app)
           .get(`/api/certificate/owned-list`)
           .set('authorization', `Bearer ${token}`)

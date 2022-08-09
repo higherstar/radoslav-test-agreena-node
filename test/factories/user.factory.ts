@@ -4,7 +4,7 @@ import faker from 'faker';
 
 import { Users } from '../../src/entities/Users';
 
-const UserFactory = async (args = {}): Promise<Users> => {
+const UserFactory = async (): Promise<Users> => {
     const salt = crypto.randomBytes(16).toString('base64');
     const hash = crypto.createHmac('sha512', salt).update('test12345!').digest('base64');
 

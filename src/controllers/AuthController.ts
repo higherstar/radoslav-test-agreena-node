@@ -1,50 +1,30 @@
 import { NextFunction, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
 
 import UserService from '../services/UserService';
+import AuthService from '../services/AuthService';
+import { handleError } from '../shared/utils/error';
+import { Users } from '../entities/Users';
 import { IRequest } from '../shared/types/base.types';
 import { Payload } from '../shared/types/auth.types';
+import { ResponseStatus } from '../shared/constants/global.constants';
 import {
   EMAIL_EXIST,
   EXPIRED_JWT,
   INVALID_JWT,
   INVALID_REFRESH_TOKEN,
   REGISTERED,
-  WRONG_EMAIL_PASSWORD
+  WRONG_EMAIL_PASSWORD,
 } from '../shared/constants/message.constants';
-import { ResponseStatus } from '../shared/constants/global.constants';
-import { Users } from '../entities/Users';
-import { handleError } from '../shared/utils/error';
 
 export class AuthController {
+  private authService: AuthService;
   private userService: UserService;
 
   constructor() {
+    this.authService = new AuthService();
     this.userService = new UserService();
   }
-
-  private comparePasswords = (password, confirm) => {
-    const passwordFields = password.split('$');
-    const salt = passwordFields[0];
-    const hash = crypto.createHmac('sha512', salt).update(confirm).digest('base64');
-
-    return hash === passwordFields[1];
-  };
-
-  private generateToken = async (user: Payload) => {
-    const accessToken = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' });
-
-    const refreshToken = jwt.sign(
-      { id: user.id, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '3h' });
-
-    return { accessToken, refreshToken };
-  };
 
   public verifyJWT = (req: IRequest, res: Response, next: NextFunction) => {
     const authorization = req.headers.authorization.split(' ');
@@ -71,10 +51,9 @@ export class AuthController {
         message: WRONG_EMAIL_PASSWORD,
       });
     } else {
-      if (this.comparePasswords(user.password, password)) {
-        const tokens = await this.generateToken({ id: user.id, email: user.email });
-
-        res.status(200).send(tokens);
+      if (this.authService.comparePasswords(user.password, password)) {
+        const tokens = this.authService.generateToken({ id: user.id, email: user.email });
+        return res.status(200).send(tokens);
       } else {
         return handleError(res, 400, WRONG_EMAIL_PASSWORD, ResponseStatus.INVALID_EMAIL_PASSWORD);
       }
@@ -84,41 +63,33 @@ export class AuthController {
   public register = async (req: IRequest, res: Response) => {
     try {
       const { email, password } = req.body;
-
       const exist = await this.userService.findByEmail(email);
 
       if (exist) {
-        return res.status(400).send({ message: EMAIL_EXIST });
+        return handleError(res, 400, EMAIL_EXIST, ResponseStatus.FAILED);
       }
-
-      const salt = crypto.randomBytes(16).toString('base64');
-      const hash = crypto.createHmac('sha512', salt).update(password).digest('base64');
 
       const user: Partial<Users> = {
         email: email,
-        password: salt + '$' + hash,
+        password: this.authService.generatePassword(password),
       };
-
       await this.userService.createUser(user);
-
-      res.status(201).send({
+      return res.status(201).send({
         status: ResponseStatus.SUCCESS,
         message: REGISTERED,
       });
     } catch (error) {
-      res.status(400).send({ error: error });
+      return handleError(res, 400, error, ResponseStatus.FAILED);
     }
   };
 
   public refresh = async (req: IRequest, res: Response) => {
     try {
       const user = jwt.verify(req.body.refreshToken, process.env.JWT_SECRET) as Payload;
-
-      const tokens = await this.generateToken(user);
-
+      const tokens = this.authService.generateToken(user);
       return res.status(200).send(tokens);
     } catch (error) {
-      return res.status(400).send({ message: INVALID_REFRESH_TOKEN });
+      return  handleError(res, 400, INVALID_REFRESH_TOKEN, ResponseStatus.FAILED);
     }
   }
 }

@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 
 import CarbonCertificateService from '../services/CarbonCertificateService';
+import { handleError } from '../shared/utils/error';
 import { IRequest } from '../shared/types/base.types';
+import { ResponseStatus } from '../shared/constants/global.constants';
 
 export class CertificateController {
   private carbonCertificateService: CarbonCertificateService;
@@ -13,7 +15,6 @@ export class CertificateController {
   public getAvailableList = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const data = await this.carbonCertificateService.getAvailableList();
-
       res.json(data);
     } catch (err) {
       next(err);
@@ -29,14 +30,14 @@ export class CertificateController {
     }
   };
 
-  public transfer = async (req: IRequest, res: Response, next: NextFunction) => {
+  public transfer = async (req: IRequest, res: Response) => {
     try {
       const { id } = req.params;
       const { userId } = req.query;
       const data = await this.carbonCertificateService.transfer(+id, +userId, req.user.id);
-      res.json(data)
+      return res.json(data)
     } catch (err) {
-      return res.status(400).json();
+      return handleError(res, 400, null, ResponseStatus.FAILED);
     }
   }
 }

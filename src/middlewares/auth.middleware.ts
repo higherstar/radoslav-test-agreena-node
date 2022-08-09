@@ -1,10 +1,10 @@
 import { NextFunction, Response } from 'express';
 
 import { authController } from '../controllers/AuthController';
+import { handleError } from '../shared/utils/error';
 import { IRequest } from '../shared/types/base.types';
 import { ResponseStatus } from '../shared/constants/global.constants';
 import { NOT_ALLOWED } from '../shared/constants/message.constants';
-import { handleError } from '../shared/utils/error';
 
 export const authenticate = async (req: IRequest, res: Response, next: NextFunction) => {
   try {
